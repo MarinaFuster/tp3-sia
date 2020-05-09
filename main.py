@@ -7,22 +7,22 @@ def main():
 
 	iterations		= 100
 	learning_rate  	= 0.5
-	plot_iteration	= False
+	plot_iteration	= True
 	stop_early 		= True
 
-					# 	Bias 	i1 		i2 		y
+					# 	Bias 	x1 		x2 		y
 	and_matrix = [	[1.00,	1.00,	1.00,	1.0],
 					[1.00,	-1.00,	1.00,	-1.00],
 					[1.00,	1.00,	-1.00,	-1.00],
 					[1.00,	-1.00,	-1.00,	-1.00]]
 	
-					# 	Bias 	i1 		i2 		y
+					# 	Bias 	x1 		x2 		y
 	xor_matrix = [	[1.00,	1.00,	1.00,	-1.0],
 					[1.00,	-1.00,	1.00,	1.00],
 					[1.00,	1.00,	-1.00,	1.00],
 					[1.00,	-1.00,	-1.00,	-1.00]]
 
-	weights= [	 0.1,	0.30,  0.80		] # initial weights specified in problem
+	weights= [	 0.1,	0.30,  0.80		] # initial weights
 
 	train_weights(and_matrix, weights=weights, iterations=iterations, learning_rate=learning_rate, plot_iteration=plot_iteration, stop_early=stop_early)
 

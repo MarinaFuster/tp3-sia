@@ -18,16 +18,16 @@ def accuracy(matrix, weights, predict=step_function):
 	return num_correct/float(len(matrix))
 
 # training algorithm for sample
-def train_weights(matrix, weights, predict=step_function, iterations=100, learning_rate=1.00, plot_iteration=False, stop_early=True, verbose=True):
+def train_weights(matrix, weights, predict=step_function, iterations=100, learning_rate=1.00, plot_iteration=False, stop_early=True):
 	for iteration in range(iterations):
 		current_accuracy = accuracy(matrix, weights)
 
-		if current_accuracy==1.0 and stop_early: break 
-		
+		if current_accuracy==1.0 and stop_early: break
+        
 		for i in range(len(matrix)):
 			prediction = predict(matrix[i][:-1], weights) 				   # get predicted classificaion
 			error      = matrix[i][-1]-prediction		 			 	   # get error from real classification
-			for j in range(len(weights)): 				 				   # calculate new weight for each node
+			for j in range(len(weights)): 				 				   # calculate new weight for each nodes
 				weights[j] = weights[j]+(learning_rate*error*matrix[i][j]) # update weights
 	
 	plot_and_or_xor(matrix, predict, weights)
