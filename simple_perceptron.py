@@ -8,6 +8,12 @@ def step_function(inputs, weights):
 		activation += inp*weight
 	return 1.0 if activation>0.0 else -1.0
 
+def sigmoid(inputs, weights):
+	activation = 0.0
+	for inp, weight in zip(inputs, weights):  # each input corresponding to each weight
+		activation += inp * weight
+	return 1 / (1 + np.exp(-activation))
+
 # calculates how well our algorithm is doing
 # on classificating the training examples
 def accuracy(matrix, weights, predict=step_function):
