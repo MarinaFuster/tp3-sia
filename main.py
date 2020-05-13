@@ -2,6 +2,7 @@ from __future__ import print_function
 import sys
 import numpy as np
 from simple_perceptron import train_weights, sigmoid
+from multilayer_perceptron import Multilayer_perceptron
 
 def main():
 
@@ -27,5 +28,22 @@ def main():
 	train_weights(and_matrix, weights=weights, predict=sigmoid, iterations=iterations, learning_rate=learning_rate, plot_iteration=plot_iteration, stop_early=stop_early)
 
 
+	# Multi layer perceptron
+	xor_matrix_multi = [	[1.00,	1.00,	1.00],
+					[1.00,	-1.00,	1.00],
+					[1.00,	1.00,	-1.00],
+					[1.00,	-1.00,	-1.00]]
+
+	xor_matrix_multi_expected = [[-1.0],[1.00],[1.00],[-1.00]]
+	mlp = Multilayer_perceptron([3,1], 3)
+
+	np_xor = np.array(xor_matrix_multi)
+	np_xor_expected = np.array(xor_matrix_multi_expected)
+	mlp.train_weights(np_xor, np_xor_expected)
+	print(mlp.predict(np.array([[1.00,-1.00,1.00]])))
+
+
 if __name__ == '__main__':
 	main()
+
+	
