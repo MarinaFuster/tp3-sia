@@ -15,7 +15,7 @@ def ej2():
     df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
     df['bias'] = 1.0
     # reorder columns to have result y as last column
-    df = df[[ 'bias','x1', 'x2', 'x3', 'y']]
+    df = df[['bias','x1', 'x2', 'x3', 'y']]
     # reorder rows for ascending y
     df.sort_values('y', inplace=True)
     # slice df into training and test dfs
@@ -27,9 +27,9 @@ def ej2():
     lol_train = df_train.values.tolist()
     lol_test = df_test.values.tolist()
 
-    weights = [0.1,	0.30, 0.80, 0.1] # initial weights x1, x2, x3, bias
+    weights = [0.1,	1., 1., 1.] # initial weights x1, x2, x3, bias
 
-    weights = train_weights(lol_train, weights=weights, predict=relu, iterations=iterations, learning_rate=learning_rate, plot=plot, stop_early=stop_early)
+    weights = train_weights_nonlinear(lol_train, weights=weights, predict=sigmoid, derive=sigmoid_derivate, iterations=iterations, learning_rate=learning_rate, stop_early=stop_early)
 
     test_perceptron(lol_train, weights=weights, print_results=True)
     weights
