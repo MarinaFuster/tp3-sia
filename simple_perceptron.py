@@ -14,6 +14,12 @@ def sigmoid(inputs, weights):
 		activation += inp * weight
 	return 1 / (1 + np.exp(-activation))
 
+def relu(inputs, weights):
+	activation = 0.0
+	for inp, weight in zip(inputs, weights):  # each input corresponding to each weight
+		activation += inp * weight
+	return activation if activation > 0.0 else 0.0
+
 # calculates how well our algorithm is doing
 # on classificating the training examples
 def accuracy(matrix, weights, predict=step_function):
@@ -24,7 +30,7 @@ def accuracy(matrix, weights, predict=step_function):
 	return num_correct/float(len(matrix))
 
 # training algorithm for sample
-def train_weights(matrix, weights, predict=step_function, iterations=100, learning_rate=1.00, plot_iteration=False, stop_early=True):
+def train_weights(matrix, weights, predict=step_function, iterations=100, learning_rate=1.00, plot=False, stop_early=True):
 	for iteration in range(iterations):
 		current_accuracy = accuracy(matrix, weights)
 
@@ -35,6 +41,22 @@ def train_weights(matrix, weights, predict=step_function, iterations=100, learni
 			error      = matrix[i][-1]-prediction		 			 	   # get error from real classification
 			for j in range(len(weights)): 				 				   # calculate new weight for each nodes
 				weights[j] = weights[j]+(learning_rate*error*matrix[i][j]) # update weights
-	
-	plot_and_or_xor(matrix, predict, weights)
-	return weights 
+
+	if plot:
+		plot_and_or_xor(matrix, predict, weights)
+	return weights
+
+
+def test_perceptron(matrix, weights, predict=relu, print_results=False):
+	predictions = []
+	groundtruths = []
+	RSEs = []
+	if print_results:
+		print('True values; Predicted values; Root Mean Errors')
+	for i in range(len(matrix)):
+		predictions.append(np.round(predict(matrix[i][:-1], weights), 2))
+		groundtruths.append(np.round(matrix[i][-1], 2))
+		RSEs.append(np.round(np.sqrt((predictions[i] - groundtruths[i])**2), 2)) #root square error
+		if print_results:
+			print('%f		%f		%f' % (groundtruths[i], predictions[i], RSEs[i]))
+	return [predictions, groundtruths, RSEs]
