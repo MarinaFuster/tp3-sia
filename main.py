@@ -1,7 +1,7 @@
 from __future__ import print_function
 import sys
 import numpy as np
-from simple_perceptron import train_weights, sigmoid
+from simple_perceptron import train_weights, step_function, sigmoid
 from multilayer_perceptron import Multilayer_perceptron
 
 def main():
@@ -25,8 +25,8 @@ def main():
 
 	weights= [	 0.1,	0.30,  0.80		] # initial weights
 
-	train_weights(and_matrix, weights=weights, predict=sigmoid, iterations=iterations, learning_rate=learning_rate, plot_iteration=plot_iteration, stop_early=stop_early)
-
+	train_weights(and_matrix, weights=weights, predict=step_function, iterations=iterations, learning_rate=learning_rate, plot=True, stop_early=stop_early)
+	#train_weights(xor_matrix, weights=weights, predict=sigmoid, iterations=iterations, learning_rate=learning_rate, plot=True, stop_early=stop_early)
 
 	
 
