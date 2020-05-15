@@ -2,7 +2,7 @@ from __future__ import print_function
 import sys
 import numpy as np
 from simple_perceptron import train_weights, step_function, sigmoid
-from multilayer_perceptron import Multilayer_perceptron
+from multilayer_perceptron import Multilayer_perceptron, import_numdata
 
 def main():
 
@@ -50,4 +50,5 @@ def multi_layer():
 
 if __name__ == '__main__':
 	main()
-	multi_layer()	
+	#import_numdata()
+	multi_layer()

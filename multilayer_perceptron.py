@@ -1,8 +1,25 @@
 from simple_perceptron import step_function, sigmoid, accuracy
 import numpy as np
+import pandas as pd
 
 def print_size(m, name):
     print("{}: {}x{}".format(name, len(m), len(m[0])))
+
+def import_numdata():
+    df = pd.read_csv("data/numeros.txt", header = None, delimiter=' ')
+    df = df.drop(columns=5)
+    data = df.to_numpy()
+    data_stacked = data.reshape(10,35)
+
+    #--- to inspect correct import of data enter the desired number in target to see a print of the given row reshaped to an image
+    #target = 9
+    #stacked = data_stacked[target,:]
+    #image = stacked.reshape(7,5)
+    #print("target = %d" % target)
+    #print(image)
+    #---endof inspection
+
+    return data_stacked
 
 class Multilayer_perceptron:
 
