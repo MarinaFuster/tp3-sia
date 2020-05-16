@@ -1,5 +1,13 @@
-from simple_perceptron import step_function, sigmoid, accuracy
 import numpy as np
+
+def sigmoid(input, weights, beta=0.05):
+    activation = 0.0
+    for inp, weight in zip(inputs, weights):  # each input corresponding to each weight
+        activation += inp * weight
+    return 1 / (1 + np.exp(-2*beta*activation))
+
+def sigmoid_derivate(input, weights, beta=0.05):
+    return 2 * beta * sigmoid(input, weights) * (1 - sigmoid(input, weights))
 
 def print_size(m, name):
     print("{}: {}x{}".format(name, len(m), len(m[0])))
