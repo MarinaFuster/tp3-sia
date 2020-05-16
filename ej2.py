@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import random
 import sys
-from non_linear_perceptron import train_weights_nonlinear
+from non_linear_perceptron import train_weights_nonlinear, test_perceptron
 from sklearn import preprocessing
 
 RANDOM = 0
@@ -22,8 +22,8 @@ def ej2():
 
     training_data, samples_to_predcit = select_data(matrix, SORTED)
 
-    weights = train_weights_nonlinear(matrix, weights, learning_rate=learning_rate, stop_early=stop_early)
-    print(weights)
+    weights = train_weights_nonlinear(training_data, weights, learning_rate=learning_rate, stop_early=stop_early)
+    test_perceptron(samples_to_predcit, weights, print_results=True)
 
 # appends column of ones for bias
 def include_bias_feature(matrix):
@@ -53,7 +53,6 @@ def select_data(matrix, process):
             else:
                 samples_to_predict.append(matrix[i])
     return np.array(training_data), np.array(samples_to_predict)
-        
 
 def get_matrix_from_xlsx(file):
     df = pd.read_excel(file, header=1)

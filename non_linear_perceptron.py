@@ -30,7 +30,7 @@ def accuracy(matrix, weights, predict=sigmoid, derive=sigmoid_derivate, beta=0.0
 	return error
 
 # training algorithm for sample
-def train_weights_nonlinear(matrix, weights, beta=0.05, predict=sigmoid, derive=sigmoid_derivate, epochs=100, learning_rate=1.00, stop_early=True):
+def train_weights_nonlinear(matrix, weights, beta=0.05, predict=sigmoid, derive=sigmoid_derivate, epochs=1000000, learning_rate=1.00, stop_early=True):
 	for epoch in range(epochs):
 
 		epoch_accuracy = accuracy(matrix, weights, beta=beta)
@@ -46,16 +46,16 @@ def train_weights_nonlinear(matrix, weights, beta=0.05, predict=sigmoid, derive=
 
 	return weights
 
-# def test_perceptron(matrix, weights, predict=sigmoid, print_results=False):
-# 	predictions = []
-# 	groundtruths = []
-# 	RSEs = []
-# 	if print_results:
-# 		print('True values; Predicted values; Root Mean Errors')
-# 	for i in range(len(matrix)):
-# 		predictions.append(np.round(predict(matrix[i][:-1], weights), 2))
-# 		groundtruths.append(np.round(matrix[i][-1], 2))
-# 		RSEs.append(np.round(np.sqrt((predictions[i] - groundtruths[i])**2), 2)) #root square error
-# 		if print_results:
-# 			print('%f		%f		%f' % (groundtruths[i], predictions[i], RSEs[i]))
-# 	return [predictions, groundtruths, RSEs]
+def test_perceptron(matrix, weights, predict=sigmoid, print_results=False):
+	predictions = []
+	groundtruths = []
+	RSEs = []
+	if print_results:
+		print('True values; Predicted values; Root Mean Errors')
+	for i in range(len(matrix)):
+		predictions.append(np.round(predict(activation(matrix[i][:-1], weights)), 2))
+		groundtruths.append(np.round(matrix[i][-1], 2))
+		RSEs.append(np.round(np.sqrt((predictions[i] - groundtruths[i])**2), 2)) #root square error
+		if print_results:
+			print('%f		%f		%f' % (groundtruths[i], predictions[i], RSEs[i]))
+	return [predictions, groundtruths, RSEs]
