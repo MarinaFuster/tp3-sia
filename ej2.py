@@ -9,21 +9,19 @@ RANDOM = 0
 SORTED = 1
 
 def ej2():
-    epochs = 100
-    learning_rate = 0.1
-    plot = False
+    epochs = 500000
+    learning_rate = 1
     stop_early = True
 
-   
     matrix = get_matrix_from_xlsx("data/TP3-ej2-Conjunto_entrenamiento.xlsx")
     matrix = include_bias_feature(normalize_data(matrix))
 
     weights = [0.1,	1., 1., 1.] # initial weights w0 (bias), w1, w2, w3
 
-    training_data, samples_to_predcit = select_data(matrix, SORTED)
+    training_data, samples_to_predict = select_data(matrix, RANDOM)
 
-    weights = train_weights_nonlinear(training_data, weights, learning_rate=learning_rate, stop_early=stop_early)
-    test_perceptron(samples_to_predcit, weights, print_results=True)
+    weights = train_weights_nonlinear(training_data, weights, learning_rate=learning_rate, epochs=epochs, stop_early=stop_early)
+    test_perceptron(samples_to_predict, weights, print_results=True)
 
 # appends column of ones for bias
 def include_bias_feature(matrix):
@@ -31,7 +29,7 @@ def include_bias_feature(matrix):
 
 # normalizes data
 def normalize_data(matrix):
-	# axis used to normalize the data along. If 1, independently normalize each sample, otherwise (if 0) normalize each feature.
+    # axis used to normalize the data along. If 1, independently normalize each sample, otherwise (if 0) normalize each feature.
 	return preprocessing.normalize(matrix, axis=0)
 
 # Returns training data and testing data
@@ -65,12 +63,13 @@ def get_matrix_from_xlsx(file):
     df.sort_values('y', inplace=True)
     # slice df into training and test dfs
     #take every 5th row
-    df_test = df.iloc[::5]
+    #df_test = df.iloc[::5]
     # drop test examples from complete set to get training set
-    df_train = df.drop(df_test.index)
+    #df_train = df.drop(df_test.index)
     # transform dataframe back to list of lists to comply with subsequent method structures
-    lol_train = df_train.values.tolist()
-    return lol_train
+    #lol_train = df_train.values.tolist()
+    lol_data = df.values.tolist()
+    return lol_data
 
 if __name__ == '__main__':
     ej2()

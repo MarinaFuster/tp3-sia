@@ -57,5 +57,6 @@ def test_perceptron(matrix, weights, predict=sigmoid, print_results=False):
 		groundtruths.append(np.round(matrix[i][-1], 2))
 		RSEs.append(np.round(np.sqrt((predictions[i] - groundtruths[i])**2), 2)) #root square error
 		if print_results:
-			print('%f		%f		%f' % (groundtruths[i], predictions[i], RSEs[i]))
+			print('%.2f		%.2f		%.2f' % (groundtruths[i], predictions[i], RSEs[i]))
+	print('Mean error: %.2f' % np.mean(RSEs))
 	return [predictions, groundtruths, RSEs]
