@@ -2,7 +2,7 @@ from __future__ import print_function
 import sys
 import numpy as np
 from simple_perceptron import train_weights, step_function
-from multilayer_perceptron import Multilayer_perceptron
+from multilayer_perceptron import Multilayer_perceptron, import_numdata
 
 def main():
 	epochs		    = 100
