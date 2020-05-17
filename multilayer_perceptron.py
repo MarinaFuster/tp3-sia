@@ -1,15 +1,6 @@
 import numpy as np
 import pandas as pd
 
-def sigmoid(input, weights, beta=0.05):
-    activation = 0.0
-    for inp, weight in zip(inputs, weights):  # each input corresponding to each weight
-        activation += inp * weight
-    return 1 / (1 + np.exp(-2*beta*activation))
-
-def sigmoid_derivate(input, weights, beta=0.05):
-    return 2 * beta * sigmoid(input, weights) * (1 - sigmoid(input, weights))
-
 def print_size(m, name):
     print("{}: {}x{}".format(name, len(m), len(m[0])))
 
@@ -18,7 +9,7 @@ def import_numdata():
     df = df.drop(columns=5)
     data = df.to_numpy()
     data_stacked = data.reshape(10,35)
-
+    
     #--- to inspect correct import of data enter the desired number in target to see a print of the given row reshaped to an image
     #target = 9
     #stacked = data_stacked[target,:]
@@ -40,13 +31,13 @@ class Multilayer_perceptron:
         self.layer_activations = [None] * (len(layers))
         self.deltas = [None] * (len(layers))
         self.deltaW = [None] * (len(layers))
-
+        
 
         # Network constants
-        self.learning_rate = 1.3
+        self.learning_rate = 0.9
         self.beta = 0.5
-        self.max_epochs = 1000000
-        self.error_threshold = 1e-5
+        self.max_epochs = 4000
+        self.error_threshold = 1e-3
         self.batch = False
         # Initializing random weights
         # TODO: Check if random.random is a good weight initialization method
@@ -59,19 +50,25 @@ class Multilayer_perceptron:
     
     def train_weights(self, data, expected):
         print(self)
+        assert(len(data) == len(expected))
         self.error = self.error_threshold + 1
         for epoch in range(self.max_epochs):
             if self.batch:
-                self.forward(row)        
-                self.back_prop(row, result)
+                self.forward(data)        
+                self.back_prop(data, expected)
             else:
+                error = 0
                 for sample,result in zip(data,expected):
                     row = np.array([sample])
                     self.forward(row)        
                     self.back_prop(row, result)
+                    error += (result - self.layer_activations[len(self.layers) - 1]) ** 2
+                self.error = error
 
+            # This only works if output layer has size 1
+            # Have to change the error calculation to make it work in others
             if self.error < self.error_threshold:
-                print("Broken in {} iterations because error is {}".format(epoch, self.error_threshold))
+                print("Broken in {} iterations because error is {}".format(epoch, self.error))
                 break
 
         print("ERROR: {}".format(self.error))
@@ -87,19 +84,13 @@ class Multilayer_perceptron:
         
         r += "Beta:{}\n".format(self.beta)
         r += "Learning rate:{}\n".format(self.learning_rate)
+        r += "Batch mode {}\n".format("YES" if self.batch else "NO")
         r += "Maximum epoch:{}\n".format(self.max_epochs)
         r += "Error threshold:{}\n".format(self.error_threshold)
         return r
         
     def predict(self, data):
-        for i in range(len(self.layers)):
-            layer_input = data if i == 0 else self.layer_activations[i - 1]
-            layer_input = np.column_stack((layer_input, np.ones((len(layer_input),1))))
-            self.layer_outputs[i] = layer_input.dot(self.weights[i])
-            self.layer_activations[i] = self.sigmoid(self.layer_outputs[i])
-
-        print(self.layer_activations[len(self.layer_activations) - 1])
-        return self.layer_activations[len(self.layers) - 1] > 0.5
+        return self.forward(data)
 
 
 
@@ -108,16 +99,15 @@ class Multilayer_perceptron:
         # Cicle through each layer
         for i in range(len(self.layers)):
             layer_input = data if i == 0 else self.layer_activations[i - 1]
-
             layer_input = np.column_stack((layer_input, np.ones((len(layer_input),1))))
-            self.layer_outputs[i] = layer_input.dot(self.weights[i]) + self.bias[i].T
+            self.layer_outputs[i] = layer_input.dot(self.weights[i])
             self.layer_activations[i] = self.sigmoid(self.layer_outputs[i])
+        return self.layer_activations[len(self.layers) - 1]
         
 
     def back_prop(self, data, expected):
         output_layer = len(self.layers) - 1
         error_vector = (expected - self.layer_activations[output_layer])
-        self.error = np.sum(error_vector**2)
         for i in range(output_layer, -1, -1):
             # Casp especial para ultima y para primer layer:
 
