@@ -99,5 +99,5 @@ def multi_layer_ej2():
 if __name__ == '__main__':
 	# main()
 	multi_layer_primos()
-	# multi_layer_ej2()
-	# multi_layer_xor()
+	multi_layer_ej2()
+	multi_layer_xor()

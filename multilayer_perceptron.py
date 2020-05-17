@@ -50,7 +50,7 @@ class Multilayer_perceptron:
     
     def train_weights(self, data, expected):
         print(self)
-        assert(len(data) == len(expected))
+        self.validate_inputs(data, expected)
         self.error = self.error_threshold + 1
         for epoch in range(self.max_epochs):
             if self.batch:
@@ -139,3 +139,9 @@ class Multilayer_perceptron:
 
     def sigmoid_derivate(self, m):
         return 2 * self.beta * (self.sigmoid(m) * (1 - self.sigmoid(m)))
+
+    def validate_inputs(self, data, expected):
+        assert(len(data) == len(expected))
+        assert(len(data.shape) == 2)
+        assert(len(expected.shape) == 2)
+        assert(len(expected[0] == self.layers[len(self.layers) - 1]))
