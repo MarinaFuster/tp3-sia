@@ -62,8 +62,11 @@ multi_layer_perceptron_xor = {
         "layers": {
             "type": "array"
         },
+        "plot": {
+            "type": "boolean"
+        }
     },
-    "required": ["epochs", "layers"]
+    "required": ["epochs", "layers", "plot"]
 }
 
 multi_layer_perceptron_primes = {
@@ -76,8 +79,11 @@ multi_layer_perceptron_primes = {
         "layers": {
             "type": "array"
         },
+        "plot": {
+            "type": "boolean"
+        }
     },
-    "required": ["epochs", "layers"]
+    "required": ["epochs", "layers", "plot"]
 }
 
 multi_layer_perceptron_dataset_ex_2 = {
@@ -89,9 +95,12 @@ multi_layer_perceptron_dataset_ex_2 = {
         },
         "layers": {
             "type": "array"
+        },
+        "plot": {
+            "type": "boolean"
         }
     },
-    "required": ["epochs", "layers"]
+    "required": ["epochs", "layers", "plot"]
 }
 
 configSchema = {

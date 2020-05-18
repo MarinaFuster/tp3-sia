@@ -4,9 +4,10 @@ import numpy as np
 import os
 import pandas as pd
 import sys
+from graphics_plot import plot_multi_layer_perceptron
 from multilayer_perceptron import Multilayer_perceptron, import_numdata, print_size
 from simple_perceptron import train_weights, step_function, simple_perceptron_info
-from ej2 import select_data, get_matrix_from_xlsx, include_bias_feature, normalize_data, run_non_linear_for_exercise_two
+from non_linear_exercise import select_data, get_matrix_from_xlsx, include_bias_feature, normalize_data, run_non_linear_for_exercise_two
 
 AND = 0
 XOR = 1
@@ -57,6 +58,9 @@ def multi_layer_xor(config):
 	xor_matrix_multi_expected = [[1],[0],[0],[1]]
 	mlp = Multilayer_perceptron(config["multi_layer_perceptron_xor"]["layers"],len(xor_matrix_multi[0]))
 
+	if config["multi_layer_perceptron_xor"]["plot"]:
+		plot_multi_layer_perceptron(config["multi_layer_perceptron_xor"]["layers"], len(xor_matrix_multi_expected))
+
 	np_xor = np.array(xor_matrix_multi)
 	np_xor_expected = np.array(xor_matrix_multi_expected)
 
@@ -69,10 +73,13 @@ def multi_layer_primos(config):
 	# zero_one_expected = np.array([0,1])
 
 	data_expected = np.array([0, 0, 1, 1, 0, 1, 0, 1, 0, 0])
-	mlp = Multilayer_perceptron(config["multi_layer_perceptron_primes"]["layers"],len(data[0]))	
 
+	mlp = Multilayer_perceptron(config["multi_layer_perceptron_primes"]["layers"],len(data[0]))	
 	merged_data = np.column_stack((data, data_expected))
 
+	if config["multi_layer_perceptron_primes"]["plot"]:
+		plot_multi_layer_perceptron(config["multi_layer_perceptron_primes"]["layers"], len(data_expected))
+	
 	training_data_merged, test_data_merged = select_data(merged_data, 0)
 
 	training_data = training_data_merged[:,:-1]
@@ -109,6 +116,10 @@ def multi_layer_ej2(config):
 	training_data_expected = training_data_merged[:,-1]
 	training_data_expected = training_data_expected.reshape(len(training_data_expected), 1)
 	mlp = Multilayer_perceptron(config["multi_layer_perceptron_dataset_ex_2"]["layers"],len(training_data[0]))
+
+	if config["multi_layer_perceptron_dataset_ex_2"]["plot"]:
+		plot_multi_layer_perceptron(config["multi_layer_perceptron_dataset_ex_2"]["layers"], len(training_data_expected))
+
 	mlp.train_weights(training_data, training_data_expected)
 
 if __name__ == '__main__':

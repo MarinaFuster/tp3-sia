@@ -2,7 +2,7 @@
     "simple_perceptron_and": {
         "epochs": 100,
         "learning_rate": 0.8,
-        "plot": false,
+        "plot": true,
         "stop_early": true
     },
     "simple_perceptron_xor": {
@@ -20,14 +20,17 @@
     },
     "multi_layer_perceptron_xor": {
         "epochs": 10000,
-        "layers": [5, 1]
+        "layers": [5, 1],
+        "plot": true
     },
     "multi_layer_perceptron_primes": {
         "epochs": 10000,
-        "layers": [10, 20 ,1]
+        "layers": [8, 5 ,1],
+        "plot": true
     },
     "multi_layer_perceptron_dataset_ex_2": {
         "epochs": 10000,
-        "layers": [20, 1]
+        "layers": [20, 1],
+        "plot": true
     }
 }
