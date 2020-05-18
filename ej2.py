@@ -47,7 +47,6 @@ def normalize_data(matrix, min_value, max_value):
         matrix[i][-1] =  (matrix[i][-1] - min_value) / (max_value - min_value)
     return matrix
 
-# corregir esto
 # def denormalize_data(matrix, min_value, max_value):
 #     for i in range(0, len(matrix)):
 #         matrix[i] = (matrix[i] * (max_value - min_value)) + min_value

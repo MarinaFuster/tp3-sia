@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from multilayer_perceptron import Multilayer_perceptron, import_numdata, print_size
 from simple_perceptron import train_weights, step_function, simple_perceptron_info
-from ej2 import select_data, get_matrix_from_xlsx, normalize_data, run_non_linear_for_exercise_two
+from ej2 import select_data, get_matrix_from_xlsx, include_bias_feature, normalize_data, run_non_linear_for_exercise_two
 
 AND = 0
 XOR = 1
@@ -85,20 +85,20 @@ def multi_layer_primos():
 	print((error**2).mean())
 
 def multi_layer_ej2():
-	training_data_merged  = np.array(normalize_data(get_matrix_from_xlsx("data/TP3-ej2-Conjunto_entrenamiento.xlsx")))
+	
+	matrix = np.array(get_matrix_from_xlsx("data/TP3-ej2-Conjunto_entrenamiento.xlsx"))
+	outputs = matrix[:, -1]
+	min_value = np.min(matrix)
+	max_value = np.max(matrix)
+
+	matrix = include_bias_feature(matrix)
+	matrix = normalize_data(matrix, min_value, max_value)
+	training_data_merged  = np.array(matrix)
 	training_data = training_data_merged[:,:-1]
 	training_data_expected = training_data_merged[:,-1]
 	training_data_expected = training_data_expected.reshape(len(training_data_expected), 1)
-	mlp = Multilayer_perceptron([50 ,1],len(training_data[0]))
+	mlp = Multilayer_perceptron([40, 10 ,1],len(training_data[0]))
 	mlp.train_weights(training_data, training_data_expected)
-
-	# print(training_data)
-	# print(training_data_expected)
-
-	# prediction = mlp.predict(training_data).T
-	# error = training_data_expected - prediction
-	# print(error)
-	# print(np.sum(np.sqrt(error **2 )) / len(training_data))
 
 if __name__ == '__main__':
 	inp = input("Select option:\n \
