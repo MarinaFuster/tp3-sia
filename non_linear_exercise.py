@@ -13,6 +13,7 @@ def run_non_linear_for_exercise_two(config):
     learning_rate = config["non_linear_perceptron"]["learning_rate"]
     beta = config["non_linear_perceptron"]["beta"]
     selection_method = config["non_linear_perceptron"]["selection_method"]
+    training_sample_size = config["non_linear_perceptron"]["training_sample_size"]
 
     matrix = get_matrix_from_xlsx("data/TP3-ej2-Conjunto_entrenamiento.xlsx")
     matrix = np.array(matrix)
@@ -24,13 +25,12 @@ def run_non_linear_for_exercise_two(config):
     matrix = normalize_data(matrix, min_value, max_value)
     
     weights = [0.1, 1.0, 1.0, 1.0]
-    print(weights)
 
-    training_data, samples_to_predict = select_data(matrix, selection_method)
-
-    print(non_linear_perceptron_info(learning_rate, beta, epochs, selection_method))
-    weights = train_weights_nonlinear(matrix, weights, learning_rate=learning_rate, epochs=epochs, stop_early=True)
-    predictions, groundtruths, RSEs = test_perceptron(matrix, weights, print_results=True)
+    training_data, samples_to_predict = select_data(matrix, selection_method, training_sample_size)
+    # print(samples_to_predict)
+    print(non_linear_perceptron_info(len(matrix), learning_rate, beta, epochs, selection_method, training_sample_size))
+    weights = train_weights_nonlinear(training_data, weights, learning_rate=learning_rate, epochs=epochs, stop_early=True)
+    predictions, groundtruths, RSEs = test_perceptron(samples_to_predict, weights, beta=beta, print_results=False)
 
 def random_weights(matrix):
     if len(matrix) == 0:
@@ -53,23 +53,48 @@ def normalize_data(matrix, min_value, max_value):
 #     return matrix
 
 # Returns training data and testing data
-def select_data(matrix, process):
+def select_data(matrix, process, training_data_size):
     training_data = []
     samples_to_predict = []
     if process == RANDOM:
         indexes = random.sample(range(0, len(matrix)), len(matrix))
         for i in range(len(matrix)):
-            if i % 2 == 0:
+            if i in range(0, training_data_size):
                 training_data.append(matrix[indexes[i]])
             else:
                 samples_to_predict.append(matrix[indexes[i]])
     if process == SORTED:
+
+        # sorts matrix
         matrix = matrix[matrix[:,-1].argsort()]
-        for i in range(len(matrix)):
-            if i % 2 == 0:
-                training_data.append(matrix[i])
-            else:
-                samples_to_predict.append(matrix[i])
+        test_data_size = len(matrix) - training_data_size
+        
+        # sample size is empty
+        if test_data_size < 0:
+            return np.array(matrix), np.array()
+        if test_data_size < training_data_size: # even numbers here
+            j = 0
+            for i in range(len(matrix)):
+                if i % 2 == 0:
+                    training_data.append(matrix[i])
+                else:
+                    if j in range(0, test_data_size):
+                        samples_to_predict.append(matrix[i])
+                        j = j + 1
+                    else:
+                        training_data.append(matrix[i])
+        else:
+            j = 0
+            for i in range(len(matrix)):
+                if i % 2 == 0:
+                    samples_to_predict.append(matrix[i])
+                else:
+                    if j in range(0, training_data_size):
+                        training_data.append(matrix[i])
+                        j = j + 1
+                    else:
+                        samples_to_predict.append(matrix[i])
+
     return np.array(training_data), np.array(samples_to_predict)
 
 def get_matrix_from_xlsx(file):

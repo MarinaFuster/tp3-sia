@@ -45,11 +45,15 @@ non_linear_perceptron = {
             "minimum": 0,
             "maximum": 1
         },
+        "training_sample_size": {
+            "type": "integer",
+            "minimum": 1,
+        },
         "stop_early": {
             "type": "boolean"
         },
     },
-    "required": ["epochs", "learning_rate", "beta", "selection_method", "stop_early"]
+    "required": ["epochs", "learning_rate", "beta", "selection_method", "training_sample_size", "stop_early"]
 }
 
 multi_layer_perceptron_xor = {

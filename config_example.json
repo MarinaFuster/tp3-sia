@@ -16,6 +16,7 @@
         "learning_rate": 0.8,
         "beta": 0.5,
         "selection_method": 0,
+        "training_sample_size": 1,
         "stop_early": true
     },
     "multi_layer_perceptron_xor": {

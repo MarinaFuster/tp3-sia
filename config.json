@@ -15,7 +15,8 @@
         "epochs": 10000,
         "learning_rate": 0.8,
         "beta": 0.5,
-        "selection_method": 0,
+        "selection_method": 1,
+        "training_sample_size": 18,
         "stop_early": true
     },
     "multi_layer_perceptron_xor": {

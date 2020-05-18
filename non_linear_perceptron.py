@@ -48,17 +48,19 @@ def train_weights_nonlinear(matrix, weights, beta=0.5, predict=sigmoid, derive=s
 	print("Broken in {} iterations with cost function {}".format(epoch, epoch_cost))
 	return weights
 
-def non_linear_perceptron_info(learning_rate, beta, epochs, selection_method):
+def non_linear_perceptron_info(data_size, learning_rate, beta, epochs, selection_method, training_sample_size):
 	r = ""
 	r += "------ Non Linear Perceptron ----------\n"
+	r += "Data collection size:{}\n".format(data_size)
 	if selection_method == 0: r += "Selection method for training data: Random\n"
 	elif selection_method == 1: r += "Selection method for training data: Sorted\n"
+	r += "Training sample size:{}\n".format(training_sample_size)
 	r += "Learning rate:{}\n".format(learning_rate)
 	r += "Beta:{}\n".format(beta)
 	r += "Maximum epoch:{}\n".format(epochs)
 	return r
 
-def test_perceptron(matrix, weights, predict=sigmoid, print_results=False):
+def test_perceptron(matrix, weights, predict=sigmoid, beta=0.5, print_results=False):
 	predictions = []
 	groundtruths = []
 	RSEs = []
@@ -70,5 +72,6 @@ def test_perceptron(matrix, weights, predict=sigmoid, print_results=False):
 		RSEs.append(np.sqrt((predictions[i] - groundtruths[i])**2)) #root square error
 		if print_results:
 			print('%.5f		%.5f		%.5f' % (groundtruths[i], predictions[i], RSEs[i]))
+	print("Cost function {} for testing sample".format(cost_function(matrix, weights, beta=beta)))
 	return [predictions, groundtruths, RSEs]
 
