@@ -2,35 +2,56 @@ import numpy as np
 import pandas as pd
 import random
 import sys
-from non_linear_perceptron import train_weights_nonlinear, test_perceptron
+from non_linear_perceptron import train_weights_nonlinear, test_perceptron, non_linear_perceptron_info
 from sklearn import preprocessing
 
 RANDOM = 0
 SORTED = 1
 
-def ej2():
-    epochs = 500000
-    learning_rate = 1
-    stop_early = True
+def run_non_linear_for_exercise_two():
+    epochs = 10000
+    learning_rate = 0.9
+    beta = 0.5
+    selection_method = RANDOM
 
     matrix = get_matrix_from_xlsx("data/TP3-ej2-Conjunto_entrenamiento.xlsx")
-    matrix = include_bias_feature(normalize_data(matrix))
+    matrix = np.array(matrix)
+    outputs = matrix[:, -1]
+    max_value = np.max(outputs)
+    min_value = np.min(outputs)
+    
+    matrix = include_bias_feature(matrix)
+    matrix = normalize_data(matrix, min_value, max_value)
+    
+    weights = [0.1, 1.0, 1.0, 1.0]
+    print(weights)
 
-    weights = [0.1,	1., 1., 1.] # initial weights w0 (bias), w1, w2, w3
+    training_data, samples_to_predict = select_data(matrix, selection_method)
 
-    training_data, samples_to_predict = select_data(matrix, RANDOM)
+    print(non_linear_perceptron_info(learning_rate, beta, epochs, selection_method))
+    weights = train_weights_nonlinear(matrix, weights, learning_rate=learning_rate, epochs=epochs, stop_early=True)
+    predictions, groundtruths, RSEs = test_perceptron(matrix, weights, print_results=True)
 
-    weights = train_weights_nonlinear(training_data, weights, learning_rate=learning_rate, epochs=epochs, stop_early=stop_early)
-    test_perceptron(samples_to_predict, weights, print_results=True)
+def random_weights(matrix):
+    if len(matrix) == 0:
+        return []
+    return np.random.rand(4)
 
 # appends column of ones for bias
 def include_bias_feature(matrix):
-    return np.column_stack((np.ones((len(matrix),1)), normalize_data(matrix)))
+    return np.column_stack((np.ones((len(matrix),1)), matrix))
 
 # normalizes data
-def normalize_data(matrix):
-    # axis used to normalize the data along. If 1, independently normalize each sample, otherwise (if 0) normalize each feature.
-	return preprocessing.normalize(matrix, axis=0)
+def normalize_data(matrix, min_value, max_value):
+    for i in range(0, len(matrix)):
+        matrix[i][-1] =  (matrix[i][-1] - min_value) / (max_value - min_value)
+    return matrix
+
+# corregir esto
+# def denormalize_data(matrix, min_value, max_value):
+#     for i in range(0, len(matrix)):
+#         matrix[i] = (matrix[i] * (max_value - min_value)) + min_value
+#     return matrix
 
 # Returns training data and testing data
 def select_data(matrix, process):
@@ -70,6 +91,3 @@ def get_matrix_from_xlsx(file):
     #lol_train = df_train.values.tolist()
     lol_data = df.values.tolist()
     return lol_data
-
-if __name__ == '__main__':
-    ej2()

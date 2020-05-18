@@ -47,7 +47,6 @@ class Multilayer_perceptron:
             self.weights[i] = np.random.randn(l_in+1,l_out) * 0.01
             self.bias[i] = np.ones((l_out,1))
 
-    
     def train_weights(self, data, expected):
         print(self)
         self.validate_inputs(data, expected)
@@ -92,8 +91,6 @@ class Multilayer_perceptron:
     def predict(self, data):
         return self.forward(data)
 
-
-
     # We expect data to already have the bias column added
     def forward(self, data):
         # Cicle through each layer
@@ -104,7 +101,6 @@ class Multilayer_perceptron:
             self.layer_activations[i] = self.sigmoid(self.layer_outputs[i])
         return self.layer_activations[len(self.layers) - 1]
         
-
     def back_prop(self, data, expected):
         output_layer = len(self.layers) - 1
         error_vector = (expected - self.layer_activations[output_layer])

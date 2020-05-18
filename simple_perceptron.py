@@ -35,6 +35,16 @@ def train_weights(matrix, weights, predict=step_function, epochs=100, learning_r
 			for j in range(len(weights)):								   # calculate new weight for each nodes
 				weights[j] = weights[j]+(learning_rate*error*matrix[i][j]) # update weights w = w + deltaw
 
+	print("Broken in {} iterations with accuracy  {}".format(epoch, current_accuracy))
 	if plot:
 		plot_and_or_xor(matrix, predict, weights)
 	return weights
+
+def simple_perceptron_info(learning_rate, epochs, problem):
+	r = ""
+	r += "------ Simple Perceptron ----------\n"
+	if problem == 0: r += "Problem:AND\n"
+	elif problem == 1: r += "Problem:XOR\n"
+	r += "Learning rate:{}\n".format(learning_rate)
+	r += "Maximum epoch:{}\n".format(epochs)
+	return r
