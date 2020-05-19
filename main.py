@@ -1,5 +1,6 @@
 from __future__ import print_function
 import json
+import math
 import numpy as np
 import os
 import pandas as pd
@@ -80,7 +81,7 @@ def multi_layer_primos(config):
 	if config["multi_layer_perceptron_primes"]["plot"]:
 		plot_multi_layer_perceptron(config["multi_layer_perceptron_primes"]["layers"], len(data_expected))
 	
-	training_data_merged, test_data_merged = select_data(merged_data, 0)
+	training_data_merged, test_data_merged = select_data(merged_data, 0, math.ceil(len(merged_data) / 2))
 
 	training_data = training_data_merged[:,:-1]
 	training_data_expected = training_data_merged[:,-1]
@@ -99,8 +100,8 @@ def multi_layer_primos(config):
 	
 
 	error = training_data_expected - prediction
-	print(error)
-	print((error**2).mean())
+	print("Errors: {}".format(error))
+	print("Mean Error: {}".format((error**2).mean()))
 
 def multi_layer_ej2(config):
 	
